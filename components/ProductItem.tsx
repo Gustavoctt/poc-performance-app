@@ -1,4 +1,9 @@
-import {memo} from 'react';
+import React, {memo, Suspense, useState} from 'react';
+
+// Carregamento só quando o usuário vai clicar nesse elemento
+const AddProductToWishList = React.lazy(() => {
+  return import('./AddToWhishList')
+});
 
 interface ProductItemProps{
   product: {
@@ -11,10 +16,20 @@ interface ProductItemProps{
 }
 
 function ProductItemComponent({ product, onAddToWishList }: ProductItemProps){
+  const [ isAddingToWishList, setIsAddingToWishList ] = useState(false);
   return(
     <div>
       {product.title} - <strong>{product.priceFormatted}</strong>
-      <button onClick={() => onAddToWishList(product.id)} >Adicionar</button>
+      <button onClick={() => setIsAddingToWishList(true)} >Adicionar</button>
+
+      {isAddingToWishList && (
+        <Suspense fallback={<span>Carregando...</span>}>
+          <AddProductToWishList
+            onAddToWishList={() => onAddToWishList(product.id)}
+            onCloseButton={() => setIsAddingToWishList(false)}
+          />
+        </Suspense>
+      )}
     </div>
   )
 }
