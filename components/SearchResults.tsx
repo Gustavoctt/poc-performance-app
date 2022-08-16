@@ -1,4 +1,4 @@
-import ProductItem from "./ProductItem"
+import { ProductItem } from "./ProductItem"
 
 interface SearchResultsProducts{
   products: Array<{
@@ -18,3 +18,11 @@ export default function SearchResults({ products }: SearchResultsProducts){
     </div>
   )
 }
+
+/**
+ * Quando usar o memo?
+ * 1. Pure Functional Components
+ * 2. Renders too often
+ * 3. Re-renders with same props
+ * 4. Medium to big size
+ */
